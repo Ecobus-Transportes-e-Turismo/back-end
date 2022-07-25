@@ -46,22 +46,17 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
                 const { placa, desc } = req.body;
 
                 if(placa === null){
-                    const fine = await FinesColletion.find<Fines>({
-                            driveId:user_Id,
-                            desc: desc == null ? false : true
-                        }
-                    
-                    ).toArray();
+                    const fine = await FinesColletion.find<Fines>({desc: desc}).toArray();
                     if(fine.length == 0){
                         res.status(200).json({message:`Não há itens...`})
                     }
                     res.status(200).json({fines:fine});
                 } else {
-                    const fine = await FinesColletion.findOne<Fines>({
-                        driveId : new ObjectId(String(user_Id)),
+                    const fine = await FinesColletion.find<Fines>({
+                        driveId : user_Id,
                         desc:desc,
                         placa:placa
-                    });
+                    }).toArray();
                     res.status(200).json({fines:fine});
                 }
             } catch (error) {
