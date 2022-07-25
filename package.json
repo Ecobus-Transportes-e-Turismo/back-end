@@ -2,11 +2,18 @@
   "name": "ecobus-api",
   "version": "0.1.0",
   "private": true,
+  "author": {
+    "name": "Kevin Oliveira", 
+    "email": "kevinklgvg@gmail.com"
+    },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
+  },
+  "engines": {
+    "node": "16.x"
   },
   "dependencies": {
     "jsonwebtoken": "^8.5.1",
