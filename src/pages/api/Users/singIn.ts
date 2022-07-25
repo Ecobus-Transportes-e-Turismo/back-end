@@ -6,6 +6,7 @@ import { Users } from "../../../types";
 
 const handleSingIn = async ( req: NextApiRequest, res: NextApiResponse ): Promise<void> => {
   await dbConnect();
+  
   const { email, password }: SingInType = req.body;
 
   switch (req.method) {

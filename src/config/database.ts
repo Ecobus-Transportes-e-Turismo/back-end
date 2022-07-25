@@ -12,7 +12,6 @@ const database = client.db(String(process.env.MONGODB_DATABASE));
 export const dbConnect = async (): Promise<ConnectType> => {
   try {
     await client.connect();
-    // console.log("banco de dados conectado!");
     return {
       database,
       client,
@@ -29,4 +28,5 @@ export const CloseDb = async () =>{
 export const UsersColletion = database.collection("users");
 export const VehiclesColletion = database.collection("vehicles");
 export const FinesColletion = database.collection("fines");
-// export const FuelColletion = database.collection("fuel");
+export const ServicesColletion = database.collection("services");
+export const FuelColletion = database.collection("fuel");
