@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect, FinesColletion } from "../../../config/database";
 import { Fines } from "../../../types";
-import { useAcess } from '../../../services/acessUser'
+import { AcessUsers } from '../../../services/acessUser'
 
 
 type ErrorResponse = {
@@ -28,7 +28,7 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
 
         case "POST":
             try {
-                const accessUser = await useAcess(String(user_Id));
+                const accessUser = await AcessUsers(String(user_Id));
                 if(accessUser){
                     const fines:Fines = req.body;
                     await FinesColletion.insertOne(fines)
@@ -67,7 +67,7 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
 
         case "DELETE":
             try {
-                const accessUser = await useAcess(String(user_Id));
+                const accessUser = await AcessUsers(String(user_Id));
                 if(accessUser){
                     const { _id: findId } = req.body;
                     await FinesColletion.findOneAndDelete({_id: new ObjectId(findId)});
@@ -83,7 +83,7 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
         case "PUT":
             try {
                 const fine:any = req.body;
-                const accessUser = await useAcess(String(user_Id));
+                const accessUser = await AcessUsers(String(user_Id));
                 if(accessUser){
                     await FinesColletion.findOneAndUpdate({_id: new ObjectId(String(fine._id))}, {$set:fine});
                     res.status(200).json({message:`Multa alterada com sucesso!`});

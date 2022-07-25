@@ -8,6 +8,6 @@ export const handleAcessUser = async ( _id:string ) => {
     return userAcess?.office === 'admin'? true : false
 }
 
-export const useAcess = async (idUser:string) => {
+export const AcessUsers = async (idUser:string) => {
     return handleAcessUser(idUser);
 }
