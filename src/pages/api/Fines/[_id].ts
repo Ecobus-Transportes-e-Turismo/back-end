@@ -43,11 +43,11 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
 
         case "PATCH":
             try {
-                const { driveId, placa, desc } = req.body;
+                const { placa, desc } = req.body;
 
-                if(placa === ""){
+                if(placa === null){
                     const fine = await FinesColletion.find<Fines>({
-                            driveId:driveId,
+                            driveId:user_Id,
                             desc: desc == null ? false : true
                         }
                     
@@ -58,7 +58,7 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
                     res.status(200).json({fines:fine});
                 } else {
                     const fine = await FinesColletion.findOne<Fines>({
-                        driveId : new ObjectId(String(driveId)),
+                        driveId : new ObjectId(String(user_Id)),
                         desc:desc,
                         placa:placa
                     });
