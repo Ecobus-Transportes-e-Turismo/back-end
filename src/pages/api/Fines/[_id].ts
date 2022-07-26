@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+
 import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect, FinesColletion } from "../../../config/database";
 import { Fines } from "../../../types";
@@ -61,37 +61,6 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
                 }
             } catch (error) {
                 res.status(404).json({message:'Multa não encontrada...'});
-            }
-        break;
-
-        case "DELETE":
-            try {
-                const accessUser = await AcessUsers(String(user_Id));
-                if(accessUser){
-                    const { _id: findId } = req.body;
-                    await FinesColletion.findOneAndDelete({_id: new ObjectId(findId)});
-                    res.status(201).json({message:"Multa deletada com sucesso!"});
-                }else {
-                    res.status(401).json({ message: `unauthorized` });
-                }
-            } catch (err) {
-                res.status(400).json({message:err});
-            }
-        break;
-
-        case "PUT":
-            try {
-                const fine:any = req.body;
-                const accessUser = await AcessUsers(String(user_Id));
-                if(accessUser){
-                    await FinesColletion.findOneAndUpdate({_id: new ObjectId(String(fine._id))}, {$set:fine});
-                    res.status(200).json({message:`Multa alterada com sucesso!`});
-                }else {
-                    res.status(401).json({ message: `unauthorized` }); 
-                }
-            } catch (err) {
-                res.status(400).json({message:err})
-                
             }
         break;
     }
