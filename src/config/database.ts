@@ -21,7 +21,7 @@ export const dbConnect = async (): Promise<ConnectType> => {
     return { client, database };
   }
 };
-export const CloseDb = async () =>{
+export const CloseDb = async () => {
     await client.close();
 }
 

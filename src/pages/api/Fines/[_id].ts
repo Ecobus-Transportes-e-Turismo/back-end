@@ -8,6 +8,7 @@ import { AcessUsers } from '../../../services/acessUser'
 type ErrorResponse = {
     message:unknown | string
 }
+
 type ResponseType  = {
     fines:Fines | Fines[] | null
 }

@@ -18,7 +18,7 @@ const handleVehicles = async (req:NextApiRequest, res:NextApiResponse<ResponseTy
         
         case "GET":
             try{
-                const allVehicles = await VehiclesColletion.find<Vehicles>({}).toArray();
+                const allVehicles = await VehiclesColletion.find<Vehicles>({ativo:true}).toArray();
                 res.status(200).json({vehicles:allVehicles});
             }catch(err:unknown){
                 res.status(400).json({message:err});
