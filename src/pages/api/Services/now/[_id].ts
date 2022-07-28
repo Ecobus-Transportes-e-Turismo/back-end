@@ -15,7 +15,7 @@ const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResp
     await dbConnect();
     const { _id : userId } = req.query;
     
-    const  { dateNow } = req.body
+    const  { dateNow } = req.body 
     
     switch(req.method){
         case "PATCH":
