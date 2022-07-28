@@ -15,11 +15,10 @@ const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResp
     await dbConnect();
     const { _id : userId } = req.query;
     
-    const  dateNow = new Date().toLocaleDateString();
-    console.log(dateNow);
+    const  { dateNow } = req.body
     
     switch(req.method){
-        case "GET":
+        case "PATCH":
             const allServices = await ServicesColletion.find<Services>({driveId: userId, data:dateNow}).toArray();
             res.status(200).json({services:allServices});
         break;
