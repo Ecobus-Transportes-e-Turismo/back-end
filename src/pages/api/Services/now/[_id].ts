@@ -15,12 +15,12 @@ const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResp
     await dbConnect();
     const { _id : userId } = req.query;
     
-    let dateNow = new Date().toLocaleDateString();
+    const  dateNow = new Date().toLocaleDateString();
     console.log(dateNow);
     
     switch(req.method){
         case "GET":
-            const allServices = await ServicesColletion.find<Services>({_id: userId, data:dateNow}).toArray();
+            const allServices = await ServicesColletion.find<Services>({driveId: userId, data:dateNow}).toArray();
             res.status(200).json({services:allServices});
         break;
     }

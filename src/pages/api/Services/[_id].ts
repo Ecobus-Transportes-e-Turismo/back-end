@@ -18,6 +18,7 @@ const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResp
     const { _id : userId } = req.query;
 
     const dateNow = new Date().toLocaleDateString();
+    console.log(dateNow)
 
     const accessuser = await AcessUsers(String(userId));
 
