@@ -47,7 +47,7 @@ const handleFines = async (req:NextApiRequest, res:NextApiResponse<ErrorResponse
                 const { placa, desc } = req.body;
 
                 if(placa === null){
-                    const fine = await FinesColletion.find<Fines>({desc: desc}).toArray();
+                    const fine = await FinesColletion.find<Fines>({desc: desc, driveId:user_Id}).toArray();
                     if(fine.length == 0){
                         res.status(200).json({message:`Não há itens...`})
                     }
