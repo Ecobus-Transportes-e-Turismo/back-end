@@ -137,7 +137,7 @@ export type CT = {
 
 export interface Services  {
     _id?:ObjectId,
-    data:Date,
+    data:Date | string,
     corporate:String,
     address:Address,
     H_Embarque:Timestamp,
@@ -148,6 +148,18 @@ export interface Services  {
     email:string,
     value:number,
     CT_destino:CT,
-    vehicleId:ObjectId,
-    driveId:ObjectId
+
+    entrada:{
+        vehicleId:ObjectId,
+        driveId:ObjectId,
+        kminicial:number,
+        kmFinal:number
+    },
+
+    saida:{
+        vehicleId:ObjectId,
+        driveId:ObjectId,
+        kminicial:number,
+        kmFinal:number
+    }
 }

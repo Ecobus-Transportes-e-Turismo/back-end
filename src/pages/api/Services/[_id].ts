@@ -2,6 +2,7 @@ import type { Services } from '../../../types/index'
 import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect, ServicesColletion } from "../../../config/database";
 import { AcessUsers } from '../../../services/acessUser';
+import { DateFormat } from '../../../services/formatDate';
 
 type ErrorResponse = {
     message:unknown | string
@@ -15,10 +16,9 @@ type ResponseType  = {
 const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResponse | ResponseType>) => {
 
     await dbConnect();
-    const { _id : userId } = req.query;
 
-    const dateNow = new Date().toLocaleDateString();
-    console.log(dateNow)
+    const { _id : userId } = req.query;
+    const dateNow = DateFormat(new Date());
 
     const accessuser = await AcessUsers(String(userId));
 
@@ -36,6 +36,7 @@ const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResp
             case "POST":
                 try {
                     const Services:Services = req.body;
+                    Services.data = DateFormat(new Date(Services.data));
                     await ServicesColletion.insertOne(Services);
                     res.status(201).json({message:`Serviço inserido com sucesso!`});
                 } catch (err) {
