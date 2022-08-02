@@ -1,4 +1,5 @@
 import { ObjectID } from "bson";
+import { ObjectId } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect, ServicesColletion } from "../../../../config/database";
 import { AcessUsers } from "../../../../services/acessUser";
@@ -15,15 +16,16 @@ type ResponseType  = {
 
 const handleAllServices = async (req:NextApiRequest, res:NextApiResponse <ResponseType | ErrorResponse>) => {
     await dbConnect();
-    const { _id: userId } = req.query;
-    const accessUser = await AcessUsers(String(userId));
+    const { params } = req.query;
+    const accessUser = await AcessUsers(String(params?.[0]));
 
+    
     if(accessUser){
         switch(req.method){
             case "PUT":
                 try {
                     const service = req.body;
-                    await ServicesColletion.findOneAndUpdate({_id : new ObjectID(service._id)},{$set:service});
+                    await ServicesColletion.findOneAndUpdate({_id : new ObjectId(String(params?.[1]))},{$set:service});
                     res.status(201).json({message:`Serviço alterado com sucesso!`});
                 } catch (err) {
                     res.status(404).json({error:err});
@@ -32,8 +34,7 @@ const handleAllServices = async (req:NextApiRequest, res:NextApiResponse <Respon
 
             case "DELETE":
                 try {
-                    const { serviceId } = req.body;
-                    await ServicesColletion.findOneAndDelete({_id: new ObjectID(serviceId)});
+                    await ServicesColletion.findOneAndDelete({_id: new ObjectID(String(params?.[1]))});
                     res.status(201).json({message:`Serviço deletado com sucesso!`});
                 } catch (err) {
                     res.status(404).json({error:err});
@@ -63,7 +64,7 @@ const handleAllServices = async (req:NextApiRequest, res:NextApiResponse <Respon
         switch(req.method){
             case "GET":
                 try {
-                    const allServicesDrive = await ServicesColletion.find<Services>({driveId:userId}).toArray();
+                    const allServicesDrive = await ServicesColletion.find<Services>({driveId:String(params?.[0])}).toArray();
                     res.status(200).json({services:allServicesDrive});
                 } catch (err) {
                     res.status(404).json({error:err});

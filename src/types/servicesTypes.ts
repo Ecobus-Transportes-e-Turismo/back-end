@@ -11,7 +11,7 @@ export type CT = {
 
 export interface Services  {
     _id?:ObjectId,
-    data:Date | string,
+    data:Date | string, //DD/MM/YYYY
     corporate:String,
     address:Address[],
     H_Embarque:string, // format = HH:MM
@@ -22,17 +22,9 @@ export interface Services  {
     email:string[],
     value:number,
     destino:CT | string,
-    observacoes:string
-    entrada:{
-        vehicleId:ObjectId,
-        driveId:ObjectId,
-        kmInicio:number,
-        kmFinal: number
-    },
-    saida:{
-        vehicleId:ObjectId,
-        driveId:ObjectId,
-        kmInicio:number,
-        kmFinal: number
-    }
+    observacoes:string,
+    vehicleId:ObjectId,
+    driveId:ObjectId,
+    kmInicio:number,
+    kmFinal: number
 }

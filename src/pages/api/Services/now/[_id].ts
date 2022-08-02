@@ -25,7 +25,10 @@ const handleServices = async (req:NextApiRequest, res:NextApiResponse <ErrorResp
     switch(req.method){
         case "PATCH":
             try {
-                const allServices = await ServicesColletion.find<Services>({driveId: userId, data:dateNow}).toArray();
+                const allServices = await ServicesColletion.findOne<Services>({
+                    data:dateNow, 
+                    driveId: userId,
+                });
                 res.status(200).json({services:allServices});
             } catch (err) {
                 res.status(404).json({error:`Não há serviço...`});

@@ -14,6 +14,7 @@ type CNH = {
 };
 
 type BankData = {
+    type:string,
     agency: number;
     account: number;
     digit: number;
