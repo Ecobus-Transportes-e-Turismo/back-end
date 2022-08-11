@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "author": {
-    "name": "Kevin Oliveira", 
+    "name": "Kevin Oliveira",
     "email": "kevinklgvg@gmail.com"
-    },
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,16 +16,20 @@
     "node": "16.x"
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.8.0",
     "next": "12.2.3",
+    "nookies": "^2.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@types/cookies": "^0.7.7",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/mongodb": "^4.0.7",
     "@types/node": "18.0.6",
+    "@types/nookies": "^2.0.3",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "eslint": "8.20.0",
