@@ -1,5 +1,5 @@
 import { SingInType, Users } from '../types';
-import { handleApi } from './axios';
+import { api } from './axios';
 
 type ResponseType = {
     user:Users,
@@ -9,7 +9,7 @@ type ResponseType = {
 
 
 export const handleSingIn = async (data:SingInType) => {
-    const api =  handleApi();
-    const response = await api.post<ResponseType>('/Users/singIn',{email:data.email, pssword:data.password});
+    
+    const response = await api.post<ResponseType>('/Users/singIn',{email: data.email, password: data.password});
     return response.data
 }

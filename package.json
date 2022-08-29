@@ -1,5 +1,5 @@
 {
-  "name": "ecobus-api",
+  "name": "ecobus-intranet",
   "version": "0.1.0",
   "private": true,
   "author": {
@@ -16,13 +16,15 @@
     "node": "16.x"
   },
   "dependencies": {
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "axios": "^0.27.2",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.8.0",
     "next": "12.2.3",
     "nookies": "^2.5.2",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.34.2"
   },
   "devDependencies": {
     "@types/cookies": "^0.7.7",

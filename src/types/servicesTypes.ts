@@ -26,5 +26,6 @@ export interface Services  {
     vehicleId:ObjectId,
     driveId:ObjectId,
     kmInicio:number,
-    kmFinal: number
+    kmFinal: number,
+    pedido:number | string
 }

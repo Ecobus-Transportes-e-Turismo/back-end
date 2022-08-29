@@ -59,6 +59,18 @@ const handleAllServices = async (req:NextApiRequest, res:NextApiResponse <Respon
                     res.status(404).json({error:err});
                 }
             break;
+
+            case "PATCH":
+                const { dataInicioService , dataFinalService } = req.body;
+                try {
+                    const all = await ServicesColletion.find<Services>({
+                        $and:[{data:{$gte:dataInicioService}}, {data:{ $lte:dataFinalService }}]
+                    }).toArray();
+                    res.status(200).json({services:all});
+                } catch (err) {
+                    res.status(404).json({error:err});
+                }
+            break;
         }
     } else {
         switch(req.method){

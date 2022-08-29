@@ -5,8 +5,17 @@
     align-items: center;
     width: 80%;
 }
+
 .logo {
+    width: 35%;
+    height: 50%;
+}
+
+.inputs {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 50%;
+    margin-top: 20px;
 }
