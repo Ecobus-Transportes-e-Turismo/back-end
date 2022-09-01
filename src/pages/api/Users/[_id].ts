@@ -83,6 +83,14 @@ const handleUserID = async ( req: NextApiRequest, res: NextApiResponse ): Promis
                 } 
             break;
 
+            case "GET": //Consultar todos os usuarios
+                try {
+                    const users = await UsersColletion.find<Users>({}).toArray();
+                    res.status(200).json(users.map(item => item.name));
+                } catch (error) {
+                    res.status(400).json({error:`erro na requisição, error: ${error}`});
+                }    
+            break;
             
             default:
                 res.status(401).json({message:'Unauthorized'})
