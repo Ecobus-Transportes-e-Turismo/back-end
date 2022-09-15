@@ -1,6 +1,7 @@
 import type { Users } from "../../../types";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { dbConnect, CloseDb, UsersColletion } from "../../../config/database";
+import { ObjectId } from "mongodb";
 
 
 type ResponseError = {
@@ -42,7 +43,7 @@ const handleUserID = async (
 
         case "DELETE":
             try {
-                await UsersColletion.findOneAndDelete({_id:_id});
+                await UsersColletion.findOneAndDelete({_id:new ObjectId(String(_id))});
                 res.status(200).json({message:`Usuário deletado com sucesso!`});
             } catch (error) {
                 res.status(404).json({error:`Error ao deletar o usuário. Error: ${error}`});
@@ -52,7 +53,7 @@ const handleUserID = async (
         case "PUT":
             const users:Users = req.body;
             try {
-                await UsersColletion.findOneAndUpdate({_id:_id}, {$set:users}, {upsert:true, raw:true});
+                await UsersColletion.findOneAndUpdate({_id:new ObjectId(String(_id))}, {$set:users}, {upsert:true, raw:true});
                 res.status(200).json({message:`Usuário alterado com sucesso!`});
             } catch (error) {
                 res.status(404).json({error:`Error ao alterar o usuário. Error: ${error}`});
@@ -61,7 +62,7 @@ const handleUserID = async (
 
         case "PATCH":
             try {
-                const users = await UsersColletion.findOne<Users>({_id:_id});
+                const users = await UsersColletion.findOne<Users>({_id:new ObjectId(String(_id))});
                 res.status(200).json({users})
             } catch (error) {
                 res.status(404).json({error:`Error ao consultar o usuário. Error: ${error}`});
