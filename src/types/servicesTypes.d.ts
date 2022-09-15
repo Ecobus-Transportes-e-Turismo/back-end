@@ -2,8 +2,16 @@ import { ObjectId } from "mongodb"
 import { Address } from "./addressTypes"
 import { typeVehicle } from "./vehiclesTypes"
 
+enum CTtype {
+   aguiaSL =  'Águia de Fogo (SL)', 
+   aguiaMG = 'Águia de Fogo (MG)', 
+   ecofire = 'Rochacara Ecofire', 
+   workfireGL = 'WorkFire (GL)', 
+   workfireST = 'WorkFire (ST)', 
+   Treinnar = 'Treinnar'
+}
 export type CT = {
-    name:string,
+    name:CTtype,
     address:Address,
     contato:string,
     phone:string
@@ -11,8 +19,8 @@ export type CT = {
 
 export interface Services  {
     _id?:ObjectId,
-    data:Date | string, //DD/MM/YYYY
-    corporate:String,
+    data:string[],
+    corporate:string,
     address:Address[],
     H_Embarque:string, // format = HH:MM
     typeVehicle:typeVehicle,
@@ -21,11 +29,10 @@ export interface Services  {
     phone:string[],
     email:string[],
     value:number,
-    destino:CT | string,
+    destino:CT,
     observacoes:string,
     vehicleId:ObjectId,
     driveId:ObjectId,
     kmInicio:number,
-    kmFinal: number,
-    pedido:number | string
+    kmFinal: number
 }

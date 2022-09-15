@@ -1,102 +1,78 @@
-import { ObjectId } from "mongodb";
-import { NextApiRequest, NextApiResponse } from "next";
-import { dbConnect, UsersColletion } from "../../../config/database";
-import { handleAcessUser } from "../../../services/acessUser";
-import { Users } from "../../../types";
+import type { Users } from "../../../types";
+import type { NextApiRequest, NextApiResponse } from "next";
+import { dbConnect, CloseDb, UsersColletion } from "../../../config/database";
 
-const handleUserID = async ( req: NextApiRequest, res: NextApiResponse ): Promise<void> => {
-    const { _id: userId } = req.query;
-    //Rotas que usuarios não admin acessa!
 
-    if(await handleAcessUser(String(userId))) {
-        await dbConnect();
-        switch (req.method) {
-            case "GET": //Consultar todos os usuarios
-                try {
-                    const users = await UsersColletion.find<Users>({}).toArray();
-                    res.status(200).json(users);
-                } catch (error) {
-                    res.status(400).json({error:`erro na requisição, error: ${error}`});
-                }    
-            break;
+type ResponseError = {
+    error:string
+}
+type ResponseType = {
+    message?:string,
+    users?:Users | Users[] | null
+}
 
-            case "POST": // Inserir usuario
-                const user:Users = req.body;
-                try {
-                    const verify = await UsersColletion.findOne({documents: user.documents});
-                    if(!verify?._id){
-                        const insertedUser = await UsersColletion.insertOne(user);
-                        res.status(201).json({message:`Usuário ${insertedUser.insertedId} inserido com sucesso!`});
-                    } else {
-                        res.status(400).json({error:`Usuario já cadastrado...`})
-                    }
-                } catch (error) {
-                    res.status(400).json({error:`Erro ao inserir o usuário, error: ${error} `});
-                }
-            break;
 
-            case "PATCH": // Consultar usuario
-                try {
-                    const findUser = await UsersColletion.findOne<Users>({_id: userId});
-                    res.status(200).json(findUser);
-                } catch (error:any) {
-                    res.status(500).json(error);
-                }
-            break;
+const handleUserID = async ( 
+    req: NextApiRequest, 
+    res: NextApiResponse<ResponseError | ResponseType> 
+): Promise<void> => {
 
-            case "DELETE":
-                const {_id} = req.body;
-                try {
-                    await UsersColletion.deleteOne({_id: new ObjectId(String(_id))});
-                    res.status(200).json({message: `Usuário deletado com sucesso!` });
-                } catch (error) {
-                    res.status(404).json({ message: `Usuário não encontrado` });
-                }
-            break;
-            case "PUT":
-                try {
-                    const user:Users = req.body;
-                    await UsersColletion.findOneAndUpdate(
-                        { _id: new ObjectId(String(userId)) },
-                        { $set: user },
-                        { upsert: true, raw: true }
-                    );
-                    res.status(200).json({ message: `Usuário alterado com sucesso`});
-                } catch (err) {
-                    res.status(404).json({ error: err});
-                } 
-            break;
-        }
-    } else {
-        switch(req.method){
-            case "PUT":
-                try {
-                    const user:Users = req.body;
-                    await UsersColletion.findOneAndUpdate(
-                        { _id: new ObjectId(String(userId)) },
-                        { $set: user },
-                        { upsert: true, raw: true }
-                    );
-                    res.status(200).json({ message: `Usuário alterado com sucesso`});
-                } catch (err) {
-                    res.status(404).json({ error: err});
-                } 
-            break;
+    await dbConnect();
+    const { _id } = req.query;
 
-            case "GET": //Consultar todos os usuarios
-                try {
-                    const users = await UsersColletion.find<Users>({}).toArray();
-                    res.status(200).json(users.map(item => item.name));
-                } catch (error) {
-                    res.status(400).json({error:`erro na requisição, error: ${error}`});
-                }    
-            break;
-            
-            default:
-                res.status(401).json({message:'Unauthorized'})
-        }
-        
+    switch (req.method) {
+        case "POST":
+            try {
+                const users:Users[] = req.body;
+                await UsersColletion.insertMany(users);
+                res.status(200).json({message:`Usuário inserido com sucesso!`});
+            } catch (error) {
+                res.status(404).json({error:`Error ao inserir o usuário. Error: ${error}`});
+            }
+        break;
+
+        case "GET":
+            try {
+                const users = await UsersColletion.find<Users>({}).toArray();
+                res.status(200).json({users});
+            } catch (error) {
+                res.status(404).json({error:`Error ao consultar os usuários. Error: ${error}`});
+            }
+        break;
+
+        case "DELETE":
+            try {
+                await UsersColletion.findOneAndDelete({_id:_id});
+                res.status(200).json({message:`Usuário deletado com sucesso!`});
+            } catch (error) {
+                res.status(404).json({error:`Error ao deletar o usuário. Error: ${error}`});
+            }
+        break;
+
+        case "PUT":
+            const users:Users = req.body;
+            try {
+                await UsersColletion.findOneAndUpdate({_id:_id}, {$set:users}, {upsert:true, raw:true});
+                res.status(200).json({message:`Usuário alterado com sucesso!`});
+            } catch (error) {
+                res.status(404).json({error:`Error ao alterar o usuário. Error: ${error}`});
+            }
+        break;
+
+        case "PATCH":
+            try {
+                const users = await UsersColletion.findOne<Users>({_id:_id});
+                res.status(200).json({users})
+            } catch (error) {
+                res.status(404).json({error:`Error ao consultar o usuário. Error: ${error}`});
+            }
+        break;
+
+        default:
+            res.status(500).json({error:`Error in server...`})
     }
     
+   
 }
+
 export default handleUserID;
